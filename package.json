@@ -1,0 +1,57 @@
+{
+    "name": "@canveletedotcom/sdk",
+    "version": "2.0.0",
+    "description": "Official TypeScript SDK for the Canvelete API",
+    "main": "dist/index.js",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "type": "module",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        },
+        "./utils": {
+            "import": "./dist/utils/index.js",
+            "types": "./dist/utils/index.d.ts"
+        }
+    },
+    "files": [
+        "dist",
+        "README.md"
+    ],
+    "scripts": {
+        "build": "tsc",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "test:coverage": "vitest run --coverage",
+        "prepublishOnly": "npm run build"
+    },
+    "keywords": [
+        "canvelete",
+        "typescript",
+        "sdk",
+        "api",
+        "image",
+        "generation",
+        "pdf",
+        "design",
+        "automation"
+    ],
+    "author": "Canvelete",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/canvelete/canvelete-sdk.git"
+    },
+    "homepage": "https://docs.canvelete.com",
+    "devDependencies": {
+        "typescript": "^5.0.0",
+        "@types/node": "^18.0.0",
+        "vitest": "^1.0.0",
+        "@vitest/coverage-v8": "^1.0.0"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    }
+}
