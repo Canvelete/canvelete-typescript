@@ -11,6 +11,7 @@ export interface RenderOptions {
     designId?: string;
     templateId?: string;
     dynamicData?: Record<string, any>;
+    dynamicElements?: Record<string, any>;
     format?: 'png' | 'jpg' | 'jpeg' | 'pdf' | 'svg';
     width?: number;
     height?: number;
@@ -61,6 +62,7 @@ export class RenderResource {
 
     /**
      * Create a synchronous render (waits for completion)
+     * Uses the backend API directly at /api/v1/render
      */
     async create(options: RenderOptions): Promise<ArrayBuffer> {
         if (!options.designId && !options.templateId) {
@@ -74,11 +76,13 @@ export class RenderResource {
 
         if (options.designId) data.designId = options.designId;
         if (options.templateId) data.templateId = options.templateId;
+        // Support both dynamicData and dynamicElements for flexibility
         if (options.dynamicData) data.dynamicData = options.dynamicData;
+        if (options.dynamicElements) data.dynamicElements = options.dynamicElements;
         if (options.width) data.width = options.width;
         if (options.height) data.height = options.height;
 
-        const imageData = await this.client.request<ArrayBuffer>('POST', '/api/automation/render', {
+        const imageData = await this.client.request<ArrayBuffer>('POST', '/api/v1/render', {
             json: data,
             binary: true,
         });
@@ -219,7 +223,7 @@ export class RenderResource {
     }
 
     /**
-     * List render history (legacy method)
+     * List render history
      */
     async list(options: ListRenderOptions = {}): Promise<PaginatedResponse<RenderRecord>> {
         const params: Record<string, string> = {
@@ -227,7 +231,7 @@ export class RenderResource {
             limit: String(options.limit || 20),
         };
 
-        return await this.client.request<PaginatedResponse<RenderRecord>>('GET', '/api/automation/render', { params });
+        return await this.client.request<PaginatedResponse<RenderRecord>>('GET', '/api/v1/render/history', { params });
     }
 
     /**

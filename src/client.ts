@@ -49,7 +49,8 @@ export class CanveleteClient {
      */
     constructor(options: ClientOptions = {}) {
         this.apiKey = options.apiKey || '';
-        this.baseUrl = (options.baseUrl || 'https://www.canvelete.com').replace(/\/$/, '');
+        // Default to backend API for direct rendering
+        this.baseUrl = (options.baseUrl || 'https://api.canvelete.com').replace(/\/$/, '');
         this.timeout = options.timeout || 30000;
 
         // Initialize resource handlers
