@@ -2,10 +2,21 @@
  * Render resource for creating and managing render jobs
  */
 
-import { writeFileSync } from 'fs';
 import type { CanveleteClient } from '../client';
 import type { PaginatedResponse } from '../types';
 import { ValidationError } from '../errors';
+
+// Helper to check if we're in a Node.js environment
+const isNode = typeof process !== 'undefined' && process.versions?.node;
+
+// Dynamic import for fs (only available in Node.js)
+const writeFile = async (path: string, data: Buffer): Promise<void> => {
+    if (!isNode) {
+        throw new Error('File writing is only available in Node.js environments');
+    }
+    const { writeFileSync } = await import('fs');
+    writeFileSync(path, data);
+};
 
 export interface RenderOptions {
     designId?: string;
@@ -88,7 +99,7 @@ export class RenderResource {
         });
 
         if (options.outputFile) {
-            writeFileSync(options.outputFile, Buffer.from(imageData));
+            await writeFile(options.outputFile, Buffer.from(imageData));
         }
 
         return imageData;
